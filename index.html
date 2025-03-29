@@ -1,0 +1,709 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#007bff">
+  <meta charset="UTF-8">
+  <title>Escape Room - Tema 1: Educación Física</title>
+  <style>
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f8f9fa, #e9ecef);
+      padding: 40px;
+    }
+    .container {
+      max-width: 850px;
+      margin: auto;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.15);
+    }
+    h1 {
+      text-align: center;
+      color: #343a40;
+      margin-bottom: 30px;
+    }
+    .question {
+      margin-bottom: 30px;
+      padding: 15px;
+      background-color: #f1f3f5;
+      border-left: 6px solid #007bff;
+      border-radius: 10px;
+    }
+    .question label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+      color: #212529;
+    }
+    .question select {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 2px solid #dee2e6;
+      border-radius: 8px;
+      background-color: #fff;
+      transition: border-color 0.3s;
+    }
+    .question select:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    .locked {
+      display: none;
+    }
+    button {
+      margin-top: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .success {
+      background-color: #d4edda;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      border-left: 6px solid #28a745;
+    }
+    .tracker {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 30px;
+      overflow-x: auto;
+    }
+    .tracker-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
+    }
+    .box {
+      width: 32px;
+      height: 32px;
+      background-color: #007bff;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 14px;
+      transition: background-color 0.3s;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+    
+    .box.correct1 { background-color: #28a745; }  /* verde */
+    .box.correct2 { background-color: #ffc107; }  /* amarillo */
+    .box.correct3 { background-color: #fd7e14; }  /* naranja */
+    .box.correct4 { background-color: #dc3545; }  /* rojo */
+
+    .box.correct {
+      background-color: #28a745;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .locked {
+      display: none;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .success {
+      background-color: #d4edda;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+  
+    .tracker {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 30px;
+      overflow-x: auto;
+    }
+    .tracker-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
+    }
+    .box {
+      width: 32px;
+      height: 32px;
+      background-color: #007bff;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 14px;
+      transition: background-color 0.3s;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+    
+    .box.correct1 { background-color: #28a745; }  /* verde */
+    .box.correct2 { background-color: #ffc107; }  /* amarillo */
+    .box.correct3 { background-color: #fd7e14; }  /* naranja */
+    .box.correct4 { background-color: #dc3545; }  /* rojo */
+
+    .box.correct {
+      background-color: #28a745;
+    }
+
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .question {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    .success {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    .box.correct1 { background-color: #28a745; }  /* verde */
+    .box.correct2 { background-color: #ffc107; }  /* amarillo */
+    .box.correct3 { background-color: #fd7e14; }  /* naranja */
+    .box.correct4 { background-color: #dc3545; }  /* rojo */
+
+    .box.correct {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+      }
+      .question {
+        font-size: 14px;
+      }
+      .question select {
+        font-size: 14px;
+      }
+      .box {
+      width: 32px;
+      height: 32px;
+      background-color: #007bff;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 14px;
+      transition: background-color 0.3s;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+      button {
+        width: 100%;
+      }
+    }
+
+
+    h2#escape-title {
+      text-align: center;
+      color: #003366;
+      font-size: 1.2em;
+      letter-spacing: 2px;
+      margin-top: -10px;
+      margin-bottom: 30px;
+    }
+
+
+    h1#escape-room-main {
+      text-align: center;
+      color: #003366;
+      font-size: 50px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    h2#escape-subtitle {
+      text-align: center;
+      color: #333;
+      font-size: 22px;
+      margin-bottom: 30px;
+    }
+
+
+    #logo-premir {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 120px;
+      animation: slideDownFade 1s ease-out;
+    }
+    @keyframes slideDownFade {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+
+    #pantalla-inicial {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: fadeInInit 1s ease-in-out;
+    }
+    #pantalla-inicial h1 {
+      font-size: 48px;
+      color: #003366;
+      margin-bottom: 20px;
+    }
+    #entrar-btn {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    #entrar-btn:hover {
+      background-color: #0056b3;
+    }
+    @keyframes fadeInInit {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+
+    #pantalla-final {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      z-index: 9999;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      animation: fadeInFinal 1s ease-in-out;
+    }
+    #pantalla-final h1 {
+      font-size: 48px;
+      color: #28a745;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    @keyframes fadeInFinal {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+
+    .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+
+    .arrow.active {
+      animation: pulseArrow 0.8s ease-in-out;
+      color: #28a745;
+    }
+    .box.correct1, .box.correct2, .box.correct3, .box.correct4 {
+      box-shadow: 0 0 10px rgba(40, 167, 69, 0.6);
+      transition: box-shadow 0.4s ease-in-out;
+    }
+    @keyframes pulseArrow {
+      0% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.7; }
+    }
+
+
+    .tracker.complete {
+      box-shadow: 0 0 20px #28a745;
+      border: 3px solid #28a745;
+      border-radius: 10px;
+      transition: box-shadow 0.6s ease-in-out;
+    }
+
+
+    #fireworks {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background: transparent;
+      z-index: 9998;
+    }
+    .firework {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: gold;
+      animation: explode 1s ease-out forwards;
+    }
+    @keyframes explode {
+      0% {
+        transform: scale(0.5);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+</style>
+</head>
+<body>
+<div id="fireworks"></div>
+  <div id="pantalla-final">
+    <h1>🎉 ENHORABUENA, HAS CONSEGUIDO SALIR 🎉</h1>
+  </div>
+  <audio id="success-sound" src="https://actions.google.com/sounds/v1/human_voices/crowd_cheer.ogg"></audio>
+
+  <div id="pantalla-inicial">
+    <h1>ESCAPE ROOM</h1>
+    <button id="entrar-btn" onclick="iniciarEscapeRoom()">ENTRAR</button>
+  </div>
+
+  <img id="logo-premir" src="https://premironline.es/assets/logo-premir.png" alt="Logo Premir">
+  <div class="container">
+    <h1 id="escape-room-main">ESCAPE ROOM</h1>
+    <h2 id="escape-subtitle">Tema 1 - Epistemología y evolución de la Educación Física</h2>
+    <div class="tracker" id="tracker">
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+  
+  <div class="box" id="box1">1</div>
+</div>
+
+<div class="box" id="box2">2</div><div class="box" id="box3">3</div><div class="box" id="box4">4</div><div class="box" id="box5">5</div><div class="box" id="box6">6</div><div class="box" id="box7">7</div><div class="box" id="box8">8</div><div class="box" id="box9">9</div><div class="box" id="box10">10</div><div class="box" id="box11">11</div><div class="box" id="box12">12</div><div class="box" id="box13">13</div><div class="box" id="box14">14</div><div class="box" id="box15">15</div><div class="box" id="box16">16</div><div class="box" id="box17">17</div><div class="box" id="box18">18</div><div class="box" id="box19">19</div>
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+  <div class="box" id="box20">20</div>
+  
+</div>
+
+</div>
+    
+<div style="text-align: center; margin-bottom: 20px;">
+  <h3 style="color: #dc3545; font-size: 36px;">⏳ Tiempo restante: <span id="timer">02:00</span></h3>
+</div>
+<audio id="correct-sound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+<audio id="wrong-sound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+<audio id="end-sound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
+
+    <div id="questions"></div>
+    <div id="final" class="locked"></div>
+  </div>
+
+  <script>
+    const preguntas = [
+      {
+        texto: "1. ¿Cómo define Mario Bunge la epistemología?",
+        correcta: "Rama de la filosofía que estudia la investigación científica y su producto",
+        opciones: [
+          "Teoría del conocimiento religioso",
+          "Modelo pedagógico",
+          "Rama de la filosofía que estudia la investigación científica y su producto",
+          "Sistema educativo práctico",
+          "Filosofía de la motricidad"
+        ]
+      },
+      {
+        texto: "2. ¿Qué autor introdujo el término epistemología?",
+        correcta: "Ferrier",
+        opciones: ["Kant", "Descartes", "Bunge", "Ferrier", "Rousseau"]
+      },
+      {
+        texto: "3. ¿Qué ley actual regula la EF en Galicia?",
+        correcta: "Decreto 156/2022",
+        opciones: ["Decreto 133/2007", "Decreto 86/2015", "Decreto 156/2022", "Ley 3/2020", "Decreto 200/2009"]
+      },
+      {
+        texto: "4. ¿Qué filósofo griego defendía que la EF era esencial para la salud del cuerpo y la mente?",
+        correcta: "Platón",
+        opciones: ["Sócrates", "Aristóteles", "Hipócrates", "Platón", "Pitágoras"]
+      },
+      {
+        texto: "5. ¿Qué movimiento gimnástico fundó Hébert?",
+        correcta: "Método natural",
+        opciones: ["Gimnasia sueca", "Juegos olímpicos", "Educación integral", "Método natural", "Ritmo y cuerpo"]
+      },
+      {
+        texto: "6. ¿Qué autor creó una sistematización de ejercicios progresiva y pedagógica en el siglo XVIII?",
+        correcta: "Gutsmuths",
+        opciones: ["Basedow", "Pestalozzi", "Nachtegall", "Gutsmuths", "Ling"]
+      },
+      {
+        texto: "7. ¿Cuál es el concepto central que articula la EF como educación integral?",
+        correcta: "Movimiento",
+        opciones: ["Juego", "Deporte", "Movimiento", "Cuerpo", "Educación"]
+      },
+      {
+        texto: "8. ¿Qué escuela gimnástica considera la gimnasia como medio para la armonía del cuerpo?",
+        correcta: "Escuela sueca",
+        opciones: ["Escuela alemana", "Escuela inglesa", "Escuela francesa", "Escuela sueca", "Escuela griega"]
+      },
+      {
+        texto: "9. ¿Qué corriente histórica utilizaba la actividad física como preparación para la guerra?",
+        correcta: "Corriente militar",
+        opciones: ["Corriente lúdica", "Corriente empírica", "Corriente pedagógica", "Corriente militar", "Corriente expresiva"]
+      },
+      {
+        texto: "10. ¿Qué autor escribió “La Educación Física en España: antecedentes histórico-legales”?",
+        correcta: "Piernavieja",
+        opciones: ["Vidal", "Piernavieja", "Arufe", "Cagigal", "Blázquez"]
+      },
+      {
+        texto: "11. ¿Cuál fue la primera etapa de evolución del concepto EF en España según Piernavieja?",
+        correcta: "1807 a 1879",
+        opciones: ["1936 a 1961", "2002 a la actualidad", "1807 a 1879", "1879 a 1936", "1961 a 1985"]
+      },
+      {
+        texto: "12. ¿Qué ley de 2020 influye directamente en la EF actual?",
+        correcta: "Lomloe",
+        opciones: ["Loce", "Lomce", "Loe", "Lomloe", "Logse"]
+      },
+      {
+        texto: "13. ¿Qué organización publicó en 2015 la Carta internacional de la EF?",
+        correcta: "Unesco",
+        opciones: ["Coe", "Oms", "Unesco", "Ue", "Unicef"]
+      },
+      {
+        texto: "14. ¿Qué autor moderno define la EF como promotora de la competencia motriz?",
+        correcta: "Arufe",
+        opciones: ["Blázquez", "Vidal", "Arufe", "Piernavieja", "Gutiérrez"]
+      },
+      {
+        texto: "15. ¿Qué movimiento introdujo ejercicios para enseñar música mediante el cuerpo?",
+        correcta: "Dalcroze",
+        opciones: ["Hébert", "Ling", "Dalcroze", "Bukh", "Marey"]
+      },
+      {
+        texto: "16. ¿Qué autor aplicó la cronofotografía para el estudio del movimiento?",
+        correcta: "Marey",
+        opciones: ["Lindhard", "Marey", "Ling", "Tissie", "Demeny"]
+      },
+      {
+        texto: "17. ¿Qué concepto une cuerpo, mente, afecto y sociedad en la EF actual?",
+        correcta: "Unidad psicosomática",
+        opciones: ["Condición física", "Coordinación motriz", "Unidad psicosomática", "Movimiento eficiente", "Expresión corporal"]
+      },
+      {
+        texto: "18. ¿Qué corriente valora la expresión corporal desde el inconsciente?",
+        correcta: "Expresión psicoanalítica",
+        opciones: ["Expresión estética", "Expresión pedagógica", "Psicomotricidad funcional", "Expresión psicoanalítica", "Expresión racional"]
+      },
+      {
+        texto: "19. ¿Qué etapa priorizó la educación para el tiempo libre (1980-actualidad)?",
+        correcta: "Etapa del tiempo libre",
+        opciones: ["Etapa militar", "Etapa pedagógica", "Etapa empírica", "Etapa del tiempo libre", "Etapa humanista"]
+      },
+      {
+        texto: "20. ¿Qué autor moderno habla de EF como fuente de vida para la sociedad?",
+        correcta: "Víctor Arufe",
+        opciones: ["Víctor Arufe", "Eduardo Restrepo", "Miguel Vidal", "Pablo Delgado", "Antonio Granero"]
+      }
+    ];
+
+    let notaTotal = 0;
+    let intentosFallidos = {};
+    let historial = [];
+
+    const questionsContainer = document.getElementById('questions');
+
+    preguntas.forEach((pregunta, index) => {
+      const div = document.createElement('div');
+      div.classList.add('question');
+      if (index > 0) div.classList.add('locked');
+      div.id = `q${index+1}`;
+      div.innerHTML = `
+        <label>${pregunta.texto}</label>
+        <select id="a${index+1}">
+          <option value="">Selecciona una opción</option>
+          ${pregunta.opciones.map(op => `<option value="${op}">${op}</option>`).join('')}
+        </select>
+        <button onclick="checkAnswer('a${index+1}', '${pregunta.correcta}', 'q${index+2}', ${index+1 === preguntas.length})">Comprobar</button>
+      `;
+      questionsContainer.appendChild(div);
+    });
+
+    function checkAnswer(selectId, correctAnswer, nextId, isLast = false) {
+      const select = document.getElementById(selectId);
+      const index = parseInt(selectId.substring(1)) - 1;
+
+      if (!intentosFallidos.hasOwnProperty(selectId)) {
+        intentosFallidos[selectId] = 0;
+      }
+
+      if (select.value === correctAnswer) {
+      document.getElementById("correct-sound").play();
+        const fallos = intentosFallidos[selectId];
+        const puntos = Math.max(0, 1 - 0.5 * fallos);
+        notaTotal += puntos;
+
+        historial.push({
+          pregunta: preguntas[index].texto,
+          intentos: fallos + 1,
+          puntos: puntos.toFixed(2)
+        });
+
+        if (nextId && document.getElementById(nextId)) {
+          document.getElementById(nextId).classList.remove('locked');
+        document.getElementById(nextId).style.display = 'block';
+        }
+        if (isLast) {
+          document.getElementById('final').classList.remove('locked');
+          const finalText = document.createElement('p');
+          finalText.innerHTML = `Nota final: <strong>${(notaTotal / preguntas.length * 10).toFixed(2)}/10</strong>`;
+          finalText.className = 'success';
+          document.getElementById('final').appendChild(finalText);
+
+          const resumen = document.createElement('div');
+          resumen.innerHTML = '<h3>Historial de respuestas:</h3>';
+          const ul = document.createElement('ul');
+          historial.forEach(h => {
+            const li = document.createElement('li');
+            li.textContent = `${h.pregunta} — Intentos: ${h.intentos}, Puntos: ${h.puntos}`;
+            ul.appendChild(li);
+          });
+          resumen.appendChild(ul);
+          resumen.className = 'success';
+          document.getElementById('final').appendChild(resumen);
+        }
+        select.disabled = true;
+
+        // Establecer color según número de intentos
+        const box = document.getElementById(`box${index + 1}`);
+        box.classList.remove('correct', 'correct1', 'correct2', 'correct3', 'correct4');
+        if (fallos === 0) box.classList.add('correct1');
+        else if (fallos === 1) box.classList.add('correct2');
+        else if (fallos === 2) box.classList.add('correct3');
+        else box.classList.add('correct4');
+
+        const flecha = document.querySelector(`.arrow-${index + 1}`);
+        if (flecha) flecha.classList.add('active');
+
+
+
+      // Ocultar la pregunta actual
+      document.getElementById(`q${index + 1}`).style.display = 'none';
+
+        document.getElementById(`box${index + 1}`).classList.add("correct");
+
+      } else {
+        intentosFallidos[selectId]++;
+        document.getElementById("wrong-sound").play();
+    alert("Respuesta incorrecta. Intenta de nuevo.");
+      }
+    }
+  
+    // Temporizador 5 minutos
+    let timeLeft = 120; // 5 minutos
+    const timerElement = document.getElementById('timer');
+    const interval = setInterval(() => {
+      const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+      const seconds = String(timeLeft % 60).padStart(2, '0');
+      timerElement.textContent = `${minutes}:${seconds}`;
+      if (timeLeft <= 0) {
+        clearInterval(interval);
+        document.getElementById('end-sound').play();
+        alert("⏰ ¡Tiempo agotado!");
+      }
+      timeLeft--;
+    }, 1000);
+
+
+    function iniciarEscapeRoom() {
+      document.getElementById('pantalla-inicial').style.display = 'none';
+      document.getElementById('q1').style.display = 'block';
+    }
+    window.onload = () => {
+      // Ocultar todas las preguntas al inicio
+      for (let i = 1; i <= 20; i++) {
+        const q = document.getElementById(`q${i}`);
+        if (q) q.style.display = 'none';
+      }
+    };
+
+
+    function lanzarFuegosArtificiales() {
+      const fireworks = document.getElementById('fireworks');
+      for (let i = 0; i < 20; i++) {
+        const fw = document.createElement('div');
+        fw.classList.add('firework');
+        fw.style.left = Math.random() * window.innerWidth + 'px';
+        fw.style.top = Math.random() * window.innerHeight + 'px';
+        fw.style.background = `hsl(${Math.random() * 360}, 100%, 60%)`;
+        fireworks.appendChild(fw);
+        setTimeout(() => fw.remove(), 1000);
+      }
+    }
+
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').then(() => {
+    console.log("Service Worker registrado");
+  });
+}
+</script>
+</body>
+</html>

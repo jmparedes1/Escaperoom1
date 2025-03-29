@@ -1,0 +1,16 @@
+{
+  "name": "Escape Room EF Tema 1",
+  "short_name": "EscapeEF",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#007bff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://premironline.es/assets/logo-premir.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
